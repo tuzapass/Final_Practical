@@ -1,0 +1,27 @@
+from Crypto.Cipher import DES
+
+
+# Set up the DES cipher with a hardcoded key 
+key = b"abcdefgh"
+#key = b'\x17\xe5Q\xdb\x00\xc8\xb83'
+
+cipher = DES.new(key,DES.MODE_ECB)
+
+# Get plaintext input from user
+plaintext = input("Enter a message to encrypt: ")
+
+# Pad the plaintext to a multiple of 8 bytes (the block size of DES)
+padded_plaintext = plaintext.encode().ljust(8 * ((len(plaintext) + 7) // 8))
+
+# Encrypt the padded plaintext
+ciphertext = cipher.encrypt(padded_plaintext)
+
+# Print the encrypted ciphertext as hexadecimal
+print(f"Encrypted message: {ciphertext.hex()}")
+
+# Decrypt the ciphertext back to plaintext 
+#decrypted_plaintext = cipher.decrypt(ciphertext)
+
+# Remove the padding from the decrypted plaintext and print it
+#plaintext = decrypted_plaintext.decode().rstrip('\0')
+#print(f"Decrypted message: {plaintext}")
