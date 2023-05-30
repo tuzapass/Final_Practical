@@ -1,64 +1,55 @@
-import sympy
-import math  
-def accept_p_q():
-    while(True):
-        print("\nEnter two different prime numbers : \n")
-        
-        while(True):
-            p = int(input("Enter prime no. p :"))
-            
-            if(sympy.isprime(p)):
-                break
-         
-        while (True):
-            q = int(input("Enter prime no. q:"))
-            
-            if(sympy.isprime(q)):
-                break
-                
-        if (p!= q):
-         break
-        
-    return p,q
+# Python for RSA asymmetric cryptographic algorithm.
+# For demonstration, values are
+# relatively small compared to practical application
+import math
 
-def main():
-    p, q = accept_p_q()
-    n = p*q
-   
-    phi_n= (p-1)*(q-1)
-    
-    while(True):
-        e = int(input("Select e such that e & phi_n are coprimes and 1<e<phi_n"))
-        if(1<e and e<phi_n and math.gcd(e,phi_n)==1):
-            break
-    k =0
-    
-    while (True):
-        d = (1+(k*phi_n)) /e
-        
-        if(int (d) == d):
-            d = int(d)
-            break
-            
-        k+=1
-        
-   
-    print(f'private key : ({d},{n})')
-    print(f'public key : ({e},{n})')   
-          
-    plain_text = int(input("Enter the plain text :"))
-    print("\nEncryption : ")   
-    print(f'plain Text : {plain_text}')
-    cipher_text = (plain_text ** e)% n
-    
-    print(f'cipher Text : {cipher_text}')
-          
-          
 
-    print("\nDecryption : ")   
-    print(f'Cipher Text : {cipher_text}')
-    plain_text = (cipher_text ** d)% n
-    
-    print(f'cipher Text : {plain_text}')
-                
-main()
+def gcd(a, h):
+	temp = 0
+	while(1):
+		temp = a % h
+		if (temp == 0):
+			return h
+		a = h
+		h = temp
+
+
+p = 3
+q = 7
+n = p*q
+e = 2
+phi = (p-1)*(q-1)
+
+while (e < phi):
+
+	# e must be co-prime to phi and
+	# smaller than phi.
+	if(gcd(e, phi) == 1):
+		break
+	else:
+		e = e+1
+
+# Private key (d stands for decrypt)
+# choosing d such that it satisfies
+# d*e = 1 + k * totient
+
+k = 2
+d = (1 + (k*phi))/e
+
+# Message to be encrypted
+msg = 12.0
+
+print("Message data = ", msg)
+
+# Encryption c = (msg ^ e) % n
+c = pow(msg, e)
+c = math.fmod(c, n)
+print("Encrypted data = ", c)
+
+# Decryption m = (c ^ d) % n
+m = pow(c, d)
+m = math.fmod(m, n)
+print("Original Message Sent = ", m)
+
+
+# This code is contributed by Pranay Arora.
